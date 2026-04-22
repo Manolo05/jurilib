@@ -14,13 +14,44 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://jurilib.vercel.app';
+
 export default async function LawyerProfile({ params }: { params: { slug: string } }) {
   const l = await getLawyerBySlug(params.slug).catch(() => null);
   if (!l) notFound();
 
   const availabilities = await listAvailabilities(l.id).catch(() => []);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LegalService',
+    name: `Me ${l.user.firstName} ${l.user.lastName}`,
+    url: `${SITE_URL}/avocat/${l.slug}`,
+    image: l.user.avatarUrl ?? undefined,
+    description: l.bio ?? undefined,
+    areaServed: l.city,
+    priceRange: `${l.consultationPrice} EUR`,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: l.city,
+      addressCountry: 'FR',
+    },
+    aggregateRating: l.ratingCount
+      ? {
+          '@type': 'AggregateRating',
+          ratingValue: Number(l.ratingAvg).toFixed(1),
+          reviewCount: l.ratingCount,
+        }
+      : undefined,
+    knowsAbout: l.specialties.map((s) => s.specialty.label),
+  };
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     <div className="mx-auto max-w-5xl px-4 py-10 grid md:grid-cols-3 gap-8">
       <div className="md:col-span-2">
         <div className="flex items-start gap-4">
@@ -92,5 +123,6 @@ export default async function LawyerProfile({ params }: { params: { slug: string
         </div>
       </aside>
     </div>
+    </>
   );
 }

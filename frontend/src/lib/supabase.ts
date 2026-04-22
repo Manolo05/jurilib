@@ -141,3 +141,67 @@ export async function listAvailabilities(lawyerId: string): Promise<Availability
 export async function listSpecialties(): Promise<{ slug: string; label: string }[]> {
   return sbGet('specialties?select=slug,label&order=label.asc');
 }
+
+export async function listCities(): Promise<string[]> {
+  const rows = await sbGet<{ city: string }[]>('lawyers_public?select=city');
+  const set = new Set<string>();
+  rows.forEach((r) => set.add(r.city));
+  return [...set].sort();
+}
+
+async function sbPost<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=minimal',
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    throw new Error(`Supabase ${res.status}: ${await res.text()}`);
+  }
+  // 201 with no body when Prefer: return=minimal
+  return (res.status === 204 || res.status === 201 ? (null as unknown as T) : await res.json());
+}
+
+export type BookingRequestPayload = {
+  lawyer_id: string;
+  availability_id: string | null;
+  guest_first_name: string;
+  guest_last_name: string;
+  guest_email: string;
+  guest_phone?: string | null;
+  note?: string | null;
+};
+
+export async function submitBookingRequest(payload: BookingRequestPayload): Promise<void> {
+  await sbPost<void>('booking_requests', payload);
+}
+
+export type LawyerApplicationPayload = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone?: string | null;
+  bar_association: string;
+  years_experience: number;
+  city: string;
+  specialties: string[];
+  message?: string | null;
+};
+
+export async function submitLawyerApplication(payload: LawyerApplicationPayload): Promise<void> {
+  await sbPost<void>('lawyer_applications', payload);
+}
+
+export async function getAvailabilityLawyer(availabilityId: string): Promise<
+  { lawyer_id: string; starts_at: string; ends_at: string } | null
+> {
+  const rows = await sbGet<{ lawyer_id: string; starts_at: string; ends_at: string }[]>(
+    `availabilities?id=eq.${encodeURIComponent(availabilityId)}&select=lawyer_id,starts_at,ends_at`,
+  );
+  return rows[0] ?? null;
+}
