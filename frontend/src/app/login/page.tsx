@@ -1,53 +1,28 @@
-'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Mail } from 'lucide-react';
+
+export const metadata = { title: 'Connexion — Jurilib' };
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
-
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    setError('');
-    try {
-      const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      if (!r.ok) throw new Error();
-      const { accessToken } = await r.json();
-      localStorage.setItem('token', accessToken);
-      router.push('/recherche');
-    } catch {
-      setError('Identifiants invalides');
-    }
-  }
-
   return (
-    <div className="mx-auto max-w-sm px-4 py-16">
-      <h1 className="text-2xl font-bold">Se connecter</h1>
-      <form onSubmit={submit} className="mt-6 space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full rounded-lg border px-3 py-2"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          className="w-full rounded-lg border px-3 py-2"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
-        {error && <p className="text-red-600 text-sm">{error}</p>}
-        <button className="w-full rounded-lg bg-brand-600 text-white py-2 hover:bg-brand-700">
-          Connexion
-        </button>
-      </form>
+    <div className="mx-auto max-w-sm px-4 py-16 text-center">
+      <h1 className="text-2xl font-bold">Espace membre</h1>
+      <p className="mt-3 text-slate-600">
+        Jurilib est en bêta privée. L&rsquo;espace connexion (clients et avocats) ouvrira
+        prochainement.
+      </p>
+      <p className="mt-6 text-sm text-slate-500 flex items-center justify-center gap-2">
+        <Mail className="h-4 w-4" /> Vous êtes avocat et souhaitez rejoindre le réseau&nbsp;?
+      </p>
+      <a
+        href="mailto:contact@jurilib.fr"
+        className="mt-3 inline-block rounded-lg bg-brand-600 text-white px-5 py-2 hover:bg-brand-700"
+      >
+        contact@jurilib.fr
+      </a>
+      <p className="mt-8 text-xs text-slate-400">
+        <Link href="/" className="underline">Retour à l&rsquo;accueil</Link>
+      </p>
     </div>
   );
 }

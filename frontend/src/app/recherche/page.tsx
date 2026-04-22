@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Star, MapPin, Video } from 'lucide-react';
-import { api, LawyerCard } from '@/lib/api';
+import { listLawyers } from '@/lib/supabase';
 
 type SearchParams = {
   city?: string;
@@ -9,11 +9,15 @@ type SearchParams = {
   ratingMin?: string;
 };
 
+export const revalidate = 60;
+
 export default async function SearchPage({ searchParams }: { searchParams: SearchParams }) {
-  const qs = new URLSearchParams(searchParams as any).toString();
-  const data = await api<{ items: LawyerCard[]; total: number }>(
-    `/lawyers${qs ? `?${qs}` : ''}`,
-  ).catch(() => ({ items: [], total: 0 }));
+  const data = await listLawyers({
+    city: searchParams.city,
+    specialty: searchParams.specialty,
+    priceMax: searchParams.priceMax ? Number(searchParams.priceMax) : undefined,
+    ratingMin: searchParams.ratingMin ? Number(searchParams.ratingMin) : undefined,
+  }).catch(() => ({ items: [], total: 0 }));
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -60,7 +64,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Searc
       </div>
 
       {data.items.length === 0 && (
-        <p className="mt-10 text-slate-500">Aucun avocat trouvé. Essayez d’élargir votre recherche.</p>
+        <p className="mt-10 text-slate-500">Aucun avocat trouvé. Essayez d&rsquo;élargir votre recherche.</p>
       )}
     </div>
   );
