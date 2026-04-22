@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 
-export default function BookingPage() {
+function BookingContent() {
   const params = useSearchParams();
   const router = useRouter();
   const availabilityId = params.get('availabilityId');
@@ -43,7 +43,7 @@ export default function BookingPage() {
   return (
     <div className="mx-auto max-w-xl px-4 py-10">
       <h1 className="text-2xl font-bold">Finaliser votre rendez-vous</h1>
-      <label className="mt-6 block text-sm font-medium">Note pour l’avocat (optionnel)</label>
+      <label className="mt-6 block text-sm font-medium">Note pour l&rsquo;avocat (optionnel)</label>
       <textarea
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
@@ -61,8 +61,16 @@ export default function BookingPage() {
       </button>
 
       <p className="mt-3 text-xs text-slate-500">
-        Paiement sécurisé par Stripe. Remboursement intégral en cas d’annulation &gt; 24 h avant le RDV.
+        Paiement sécurisé par Stripe. Remboursement intégral en cas d&rsquo;annulation &gt; 24 h avant le RDV.
       </p>
     </div>
+  );
+}
+
+export default function BookingPage() {
+  return (
+    <Suspense fallback={<p className="p-10">Chargement…</p>}>
+      <BookingContent />
+    </Suspense>
   );
 }
