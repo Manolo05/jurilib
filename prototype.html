@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jurilib — Prototype</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: { colors: { brand: { 50:'#f0f7ff',100:'#d9ebff',500:'#2563eb',600:'#1d4ed8',700:'#1e40af',900:'#0f1f47'} } } }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  .view { display: none; }
+  .view.active { display: block; }
+  .chip { display:inline-flex; align-items:center; gap:.25rem; border-radius:9999px; padding:.15rem .6rem; font-size:.75rem; }
+</style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900">
+
+<!-- ========== TOP NAV ========== -->
+<header class="sticky top-0 z-10 border-b bg-white">
+  <div class="mx-auto max-w-6xl flex items-center justify-between px-4 py-4">
+    <a href="#" onclick="go('home')" class="flex items-center gap-2 font-semibold text-lg">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-brand-600"><path d="M16 11V7a4 4 0 0 0-8 0v4"/><rect x="5" y="11" width="14" height="10" rx="2"/></svg>
+      <span>Jurilib</span>
+      <span class="ml-2 text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">PROTOTYPE</span>
+    </a>
+    <nav class="flex items-center gap-4 text-sm">
+      <a href="#" onclick="go('search')" class="hover:text-brand-600">Trouver un avocat</a>
+      <a href="#" onclick="go('dashboard')" class="hover:text-brand-600">Espace avocat</a>
+      <a href="#" onclick="go('client-rdv')" class="hover:text-brand-600">Mes RDV</a>
+      <a href="#" onclick="go('login')" class="rounded-md bg-brand-600 text-white px-4 py-2 hover:bg-brand-700">Se connecter</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ========== VIEW: HOME ========== -->
+<section id="view-home" class="view active">
+  <div class="bg-gradient-to-b from-brand-50 to-white">
+    <div class="mx-auto max-w-6xl px-4 py-20">
+      <h1 class="text-4xl md:text-5xl font-bold max-w-3xl leading-tight">
+        Prenez rendez-vous avec un avocat en quelques clics.
+      </h1>
+      <p class="mt-4 text-lg text-slate-600 max-w-2xl">
+        Jurilib vous met en relation avec des avocats vérifiés, en visio ou en présentiel, avec des disponibilités en temps réel et un paiement sécurisé.
+      </p>
+
+      <div class="mt-8 bg-white rounded-xl shadow-sm border p-2 flex flex-col md:flex-row gap-2 max-w-3xl">
+        <select id="home-spec" class="flex-1 px-4 py-3 rounded-lg outline-none">
+          <option value="">Toutes les spécialités</option>
+          <option>Droit du travail</option>
+          <option>Droit pénal</option>
+          <option>Droit de la famille</option>
+          <option>Droit des affaires</option>
+          <option>Droit immobilier</option>
+        </select>
+        <select id="home-city" class="flex-1 px-4 py-3 rounded-lg outline-none border-t md:border-t-0 md:border-l">
+          <option value="">Toute la France</option>
+          <option>Paris</option><option>Lyon</option><option>Marseille</option>
+          <option>Bordeaux</option><option>Toulouse</option>
+        </select>
+        <button onclick="go('search')" class="bg-brand-600 text-white rounded-lg px-6 py-3 hover:bg-brand-700">
+          Rechercher
+        </button>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-2 text-sm">
+        <button onclick="setSpecAndGo('Droit du travail')" class="rounded-full bg-white border px-3 py-1 hover:border-brand-500">Droit du travail</button>
+        <button onclick="setSpecAndGo('Droit pénal')" class="rounded-full bg-white border px-3 py-1 hover:border-brand-500">Droit pénal</button>
+        <button onclick="setSpecAndGo('Droit de la famille')" class="rounded-full bg-white border px-3 py-1 hover:border-brand-500">Droit de la famille</button>
+        <button onclick="setSpecAndGo('Droit immobilier')" class="rounded-full bg-white border px-3 py-1 hover:border-brand-500">Droit immobilier</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mx-auto max-w-6xl px-4 py-16 grid md:grid-cols-3 gap-6">
+    <div class="rounded-xl border bg-white p-6">
+      <div class="h-8 w-8 text-brand-600">🛡️</div>
+      <h3 class="mt-3 font-semibold">Avocats vérifiés</h3>
+      <p class="mt-1 text-sm text-slate-600">Inscription au barreau contrôlée pour chaque profil.</p>
+    </div>
+    <div class="rounded-xl border bg-white p-6">
+      <div class="h-8 w-8 text-brand-600">📅</div>
+      <h3 class="mt-3 font-semibold">Disponibilités en temps réel</h3>
+      <p class="mt-1 text-sm text-slate-600">Visualisez l'agenda, réservez 24/7.</p>
+    </div>
+    <div class="rounded-xl border bg-white p-6">
+      <div class="h-8 w-8 text-brand-600">💳</div>
+      <h3 class="mt-3 font-semibold">Paiement sécurisé</h3>
+      <p class="mt-1 text-sm text-slate-600">Stripe, reçu automatique, facturation claire.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== VIEW: SEARCH RESULTS ========== -->
+<section id="view-search" class="view">
+  <div class="mx-auto max-w-6xl px-4 py-8">
+    <div class="flex flex-col md:flex-row gap-6">
+      <!-- Filters -->
+      <aside class="md:w-64 space-y-5 bg-white rounded-xl border p-5 h-fit">
+        <div>
+          <label class="text-sm font-medium">Prix max</label>
+          <input type="range" min="50" max="300" value="150" id="filter-price" class="w-full" oninput="document.getElementById('price-val').textContent=this.value+' €'" />
+          <p class="text-xs text-slate-500" id="price-val">150 €</p>
+        </div>
+        <div>
+          <label class="text-sm font-medium">Note min</label>
+          <select id="filter-rating" class="w-full mt-1 rounded-lg border px-2 py-1.5 text-sm">
+            <option value="0">Toutes</option>
+            <option value="3">3★ et +</option>
+            <option value="4">4★ et +</option>
+            <option value="4.5">4.5★ et +</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm font-medium">Type de RDV</label>
+          <div class="space-y-1 mt-1 text-sm">
+            <label class="flex items-center gap-2"><input type="checkbox" checked /> Visio</label>
+            <label class="flex items-center gap-2"><input type="checkbox" checked /> Présentiel</label>
+            <label class="flex items-center gap-2"><input type="checkbox" /> Téléphone</label>
+          </div>
+        </div>
+        <button onclick="renderLawyers()" class="w-full rounded-lg bg-brand-600 text-white py-2 hover:bg-brand-700 text-sm">Filtrer</button>
+      </aside>
+
+      <!-- Results -->
+      <div class="flex-1">
+        <h2 id="search-title" class="text-xl font-bold">8 avocats à Paris</h2>
+        <div id="lawyers-grid" class="mt-4 grid md:grid-cols-2 gap-4"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== VIEW: LAWYER PROFILE ========== -->
+<section id="view-profile" class="view">
+  <div class="mx-auto max-w-5xl px-4 py-8 grid md:grid-cols-3 gap-8">
+    <div class="md:col-span-2" id="profile-main"></div>
+
+    <aside class="rounded-xl border bg-white p-5 h-fit sticky top-24" id="profile-aside"></aside>
+  </div>
+</section>
+
+<!-- ========== VIEW: BOOKING ========== -->
+<section id="view-booking" class="view">
+  <div class="mx-auto max-w-xl px-4 py-10">
+    <button onclick="history.back()" class="text-sm text-slate-500 hover:text-brand-600">← Retour</button>
+    <h1 class="mt-4 text-2xl font-bold">Finaliser votre rendez-vous</h1>
+    <div id="booking-recap" class="mt-4 rounded-xl border bg-white p-4 text-sm"></div>
+
+    <label class="mt-6 block text-sm font-medium">Note pour l'avocat (optionnel)</label>
+    <textarea id="booking-notes" rows="4" placeholder="Décrivez brièvement votre situation…" class="mt-2 w-full rounded-lg border px-3 py-2"></textarea>
+
+    <label class="mt-4 block text-sm font-medium">Type de rendez-vous</label>
+    <div class="mt-2 grid grid-cols-3 gap-2">
+      <button class="type-btn active rounded-lg border py-2 text-sm">Visio</button>
+      <button class="type-btn rounded-lg border py-2 text-sm">Présentiel</button>
+      <button class="type-btn rounded-lg border py-2 text-sm">Téléphone</button>
+    </div>
+
+    <button onclick="go('payment')" class="mt-6 w-full rounded-lg bg-brand-600 text-white py-3 font-medium hover:bg-brand-700">
+      Continuer vers le paiement
+    </button>
+
+    <p class="mt-3 text-xs text-slate-500">Paiement sécurisé par Stripe. Remboursement intégral en cas d'annulation &gt; 24 h avant le RDV.</p>
+  </div>
+</section>
+
+<!-- ========== VIEW: PAYMENT ========== -->
+<section id="view-payment" class="view">
+  <div class="mx-auto max-w-md px-4 py-10">
+    <div class="rounded-xl border bg-white p-6">
+      <div class="flex items-center gap-2">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#635BFF"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109L3.44 21.85C5.152 22.817 8.32 23.8 11.604 23.8c2.655 0 4.883-.628 6.392-1.816 1.685-1.325 2.555-3.285 2.555-5.663 0-4.159-2.56-5.82-6.575-7.171z"/></svg>
+        <p class="text-sm text-slate-500">Paiement sécurisé via <strong>Stripe</strong></p>
+      </div>
+
+      <h1 class="mt-4 text-xl font-bold">Consultation — 80 €</h1>
+      <p class="text-sm text-slate-500">Me Sophie Dupont · mer. 29 avril à 10:00</p>
+
+      <div class="mt-6 space-y-3">
+        <div>
+          <label class="text-sm font-medium">Numéro de carte</label>
+          <input placeholder="4242 4242 4242 4242" class="mt-1 w-full rounded-lg border px-3 py-2 text-sm" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-sm font-medium">MM / AA</label>
+            <input placeholder="12/28" class="mt-1 w-full rounded-lg border px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="text-sm font-medium">CVC</label>
+            <input placeholder="123" class="mt-1 w-full rounded-lg border px-3 py-2 text-sm" />
+          </div>
+        </div>
+      </div>
+
+      <button onclick="go('success')" class="mt-6 w-full rounded-lg bg-brand-600 text-white py-3 font-medium hover:bg-brand-700">
+        Payer 80 €
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== VIEW: SUCCESS ========== -->
+<section id="view-success" class="view">
+  <div class="mx-auto max-w-md px-4 py-16 text-center">
+    <div class="mx-auto h-16 w-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-3xl">✓</div>
+    <h1 class="mt-4 text-2xl font-bold">Rendez-vous confirmé !</h1>
+    <p class="mt-2 text-slate-600">Un email avec le lien visio a été envoyé à votre adresse.</p>
+    <div class="mt-6 rounded-xl border bg-white p-5 text-left text-sm">
+      <p><strong>Avocat :</strong> Me Sophie Dupont</p>
+      <p><strong>Date :</strong> mer. 29 avril 2026 à 10:00</p>
+      <p><strong>Format :</strong> Visio (lien envoyé 15 min avant)</p>
+      <p><strong>Montant :</strong> 80 €</p>
+    </div>
+    <button onclick="go('client-rdv')" class="mt-6 w-full rounded-lg bg-brand-600 text-white py-3">Voir mes rendez-vous</button>
+  </div>
+</section>
+
+<!-- ========== VIEW: LOGIN ========== -->
+<section id="view-login" class="view">
+  <div class="mx-auto max-w-sm px-4 py-16">
+    <h1 class="text-2xl font-bold">Se connecter</h1>
+    <div class="mt-6 space-y-3">
+      <input type="email" placeholder="Email" class="w-full rounded-lg border px-3 py-2" />
+      <input type="password" placeholder="Mot de passe" class="w-full rounded-lg border px-3 py-2" />
+      <button onclick="go('home')" class="w-full rounded-lg bg-brand-600 text-white py-2 hover:bg-brand-700">Connexion</button>
+      <p class="text-sm text-center text-slate-500">
+        Pas encore de compte ? <a class="text-brand-600 underline" href="#" onclick="go('register')">Inscription</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== VIEW: REGISTER ========== -->
+<section id="view-register" class="view">
+  <div class="mx-auto max-w-sm px-4 py-16">
+    <h1 class="text-2xl font-bold">Créer un compte</h1>
+    <div class="mt-4 grid grid-cols-2 gap-2">
+      <button class="role-btn active rounded-lg border py-2 text-sm">Je suis client</button>
+      <button class="role-btn rounded-lg border py-2 text-sm">Je suis avocat</button>
+    </div>
+    <div class="mt-6 space-y-3">
+      <div class="grid grid-cols-2 gap-3">
+        <input placeholder="Prénom" class="rounded-lg border px-3 py-2" />
+        <input placeholder="Nom" class="rounded-lg border px-3 py-2" />
+      </div>
+      <input type="email" placeholder="Email" class="w-full rounded-lg border px-3 py-2" />
+      <input type="password" placeholder="Mot de passe" class="w-full rounded-lg border px-3 py-2" />
+      <button onclick="go('home')" class="w-full rounded-lg bg-brand-600 text-white py-2">S'inscrire</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== VIEW: CLIENT RDV ========== -->
+<section id="view-client-rdv" class="view">
+  <div class="mx-auto max-w-4xl px-4 py-10">
+    <h1 class="text-2xl font-bold">Mes rendez-vous</h1>
+    <div class="mt-6 rounded-xl border bg-white divide-y">
+      <div class="p-4 flex items-center justify-between">
+        <div>
+          <p class="font-medium">Me Sophie Dupont</p>
+          <p class="text-sm text-slate-500">mer. 29 avril · 10:00 · Visio</p>
+        </div>
+        <span class="chip bg-green-100 text-green-700">Confirmé</span>
+      </div>
+      <div class="p-4 flex items-center justify-between">
+        <div>
+          <p class="font-medium">Me Thomas Moreau</p>
+          <p class="text-sm text-slate-500">ven. 12 avril · 14:30 · Présentiel</p>
+        </div>
+        <span class="chip bg-slate-100 text-slate-700">Terminé</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== VIEW: DASHBOARD AVOCAT ========== -->
+<section id="view-dashboard" class="view">
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-bold">Tableau de bord — Me Dupont</h1>
+      <span class="chip bg-brand-50 text-brand-700">Compte vérifié ✓</span>
+    </div>
+
+    <div class="mt-6 grid md:grid-cols-4 gap-4">
+      <div class="rounded-xl border bg-white p-5">
+        <p class="text-sm text-slate-500">RDV à venir</p>
+        <p class="text-3xl font-bold">7</p>
+      </div>
+      <div class="rounded-xl border bg-white p-5">
+        <p class="text-sm text-slate-500">Revenus ce mois</p>
+        <p class="text-3xl font-bold">2 240 €</p>
+      </div>
+      <div class="rounded-xl border bg-white p-5">
+        <p class="text-sm text-slate-500">Clients uniques</p>
+        <p class="text-3xl font-bold">18</p>
+      </div>
+      <div class="rounded-xl border bg-white p-5">
+        <p class="text-sm text-slate-500">Note moyenne</p>
+        <p class="text-3xl font-bold">4.8 <span class="text-base text-slate-400">★</span></p>
+      </div>
+    </div>
+
+    <div class="mt-10 grid md:grid-cols-3 gap-6">
+      <div class="md:col-span-2">
+        <h2 class="font-semibold">Prochains rendez-vous</h2>
+        <div class="mt-3 rounded-xl border bg-white divide-y">
+          <div class="p-4 flex items-center justify-between">
+            <div>
+              <p class="font-medium">Julie Martin · Droit du travail</p>
+              <p class="text-sm text-slate-500">mer. 29 avril · 10:00 · Visio</p>
+            </div>
+            <button class="text-sm text-brand-600 hover:underline">Voir la note</button>
+          </div>
+          <div class="p-4 flex items-center justify-between">
+            <div>
+              <p class="font-medium">Marc Durand · Litige locatif</p>
+              <p class="text-sm text-slate-500">jeu. 30 avril · 15:00 · Présentiel</p>
+            </div>
+            <button class="text-sm text-brand-600 hover:underline">Voir la note</button>
+          </div>
+          <div class="p-4 flex items-center justify-between">
+            <div>
+              <p class="font-medium">Lucas Petit · Consultation</p>
+              <p class="text-sm text-slate-500">ven. 1er mai · 09:30 · Visio</p>
+            </div>
+            <button class="text-sm text-brand-600 hover:underline">Voir la note</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="font-semibold">Disponibilités cette semaine</h2>
+        <div class="mt-3 rounded-xl border bg-white p-4 text-xs">
+          <div class="grid grid-cols-7 gap-1 text-center text-slate-500">
+            <div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div><div>D</div>
+          </div>
+          <div class="mt-2 grid grid-cols-7 gap-1">
+            <div class="h-8 rounded bg-green-100"></div>
+            <div class="h-8 rounded bg-green-200"></div>
+            <div class="h-8 rounded bg-green-300"></div>
+            <div class="h-8 rounded bg-green-200"></div>
+            <div class="h-8 rounded bg-green-400"></div>
+            <div class="h-8 rounded bg-slate-100"></div>
+            <div class="h-8 rounded bg-slate-100"></div>
+          </div>
+          <button class="mt-4 w-full rounded-lg bg-brand-600 text-white py-2">Gérer mes créneaux</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== DATA + LOGIC ========== -->
+<script>
+const LAWYERS = [
+  { id:1, first:'Sophie', last:'Dupont', city:'Paris', specs:['Droit du travail','Droit social'], price:80, rating:4.9, reviews:42, exp:8, bio:"Me Dupont défend salariés et indépendants depuis 8 ans. Approche humaine, pédagogique, claire.", avatar:'bg-rose-100 text-rose-700' },
+  { id:2, first:'Alexandre', last:'Bernard', city:'Lyon', specs:['Droit pénal'], price:120, rating:4.7, reviews:31, exp:12, bio:"Ancien magistrat, Me Bernard est spécialiste des dossiers pénaux sensibles.", avatar:'bg-blue-100 text-blue-700' },
+  { id:3, first:'Marie', last:'Lefebvre', city:'Paris', specs:['Droit de la famille'], price:95, rating:4.8, reviews:58, exp:10, bio:"Divorce, garde d'enfants, succession — Me Lefebvre vous accompagne avec bienveillance.", avatar:'bg-emerald-100 text-emerald-700' },
+  { id:4, first:'Thomas', last:'Moreau', city:'Marseille', specs:['Droit immobilier','Droit des affaires'], price:110, rating:4.6, reviews:22, exp:9, bio:"Me Moreau conseille PME et particuliers sur leurs projets immobiliers.", avatar:'bg-amber-100 text-amber-700' },
+  { id:5, first:'Camille', last:'Laurent', city:'Bordeaux', specs:['Droit du travail'], price:85, rating:4.9, reviews:47, exp:7, bio:"Rupture conventionnelle, harcèlement, litiges — accompagnement complet.", avatar:'bg-purple-100 text-purple-700' },
+  { id:6, first:'Julien', last:'Simon', city:'Toulouse', specs:['Droit pénal','Droit des étrangers'], price:100, rating:4.5, reviews:15, exp:6, bio:"Me Simon plaide aux côtés des personnes en situation précaire.", avatar:'bg-cyan-100 text-cyan-700' },
+  { id:7, first:'Laure', last:'Michel', city:'Paris', specs:['Droit des affaires','Propriété intellectuelle'], price:140, rating:4.8, reviews:29, exp:11, bio:"Startups, fondateurs, création de marque : Me Michel vous accompagne.", avatar:'bg-indigo-100 text-indigo-700' },
+  { id:8, first:'Nicolas', last:'Leroy', city:'Lyon', specs:['Droit fiscal'], price:160, rating:4.9, reviews:38, exp:14, bio:"Me Leroy conseille dirigeants et héritiers sur leur fiscalité.", avatar:'bg-teal-100 text-teal-700' },
+];
+
+function go(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
+  window.scrollTo(0,0);
+  if (view === 'search') renderLawyers();
+}
+
+function setSpecAndGo(s) {
+  document.getElementById('home-spec').value = s;
+  go('search');
+}
+
+function renderLawyers() {
+  const city = document.getElementById('home-city').value;
+  const spec = document.getElementById('home-spec').value;
+  const priceMax = Number(document.getElementById('filter-price')?.value ?? 300);
+  const ratingMin = Number(document.getElementById('filter-rating')?.value ?? 0);
+
+  const filtered = LAWYERS.filter(l =>
+    (!city || l.city === city) &&
+    (!spec || l.specs.some(s => s.toLowerCase().includes(spec.toLowerCase()))) &&
+    l.price <= priceMax &&
+    l.rating >= ratingMin
+  );
+
+  document.getElementById('search-title').textContent =
+    `${filtered.length} avocat${filtered.length>1?'s':''}${city?` à ${city}`:''}${spec?` en ${spec}`:''}`;
+
+  const grid = document.getElementById('lawyers-grid');
+  grid.innerHTML = filtered.map(l => `
+    <a href="#" onclick="openProfile(${l.id});return false;" class="rounded-xl border bg-white p-5 hover:shadow-md transition block">
+      <div class="flex items-start justify-between">
+        <div class="flex items-center gap-3">
+          <div class="h-12 w-12 rounded-full ${l.avatar} flex items-center justify-center font-semibold">${l.first[0]}${l.last[0]}</div>
+          <div>
+            <h3 class="font-semibold">Me ${l.first} ${l.last}</h3>
+            <p class="text-xs text-slate-500">📍 ${l.city}</p>
+          </div>
+        </div>
+        <span class="text-sm">⭐ ${l.rating} <span class="text-slate-400">(${l.reviews})</span></span>
+      </div>
+      <div class="mt-3 flex flex-wrap gap-1.5">
+        ${l.specs.map(s=>`<span class="chip bg-brand-50 text-brand-700">${s}</span>`).join('')}
+      </div>
+      <div class="mt-4 flex items-center justify-between text-sm">
+        <span class="text-slate-600">🎥 Visio disponible</span>
+        <span class="font-semibold">${l.price} €</span>
+      </div>
+    </a>
+  `).join('');
+}
+
+function openProfile(id) {
+  const l = LAWYERS.find(x => x.id === id);
+  if (!l) return;
+
+  document.getElementById('profile-main').innerHTML = `
+    <div class="rounded-xl border bg-white p-6">
+      <div class="flex items-start gap-4">
+        <div class="h-20 w-20 rounded-full ${l.avatar} flex items-center justify-center font-bold text-xl">${l.first[0]}${l.last[0]}</div>
+        <div>
+          <h1 class="text-2xl font-bold">Me ${l.first} ${l.last}</h1>
+          <p class="text-slate-500 mt-1">📍 ${l.city} · Barreau de ${l.city}</p>
+          <div class="mt-2 flex items-center gap-4 text-sm">
+            <span>⭐ ${l.rating} (${l.reviews} avis)</span>
+            <span>🎓 ${l.exp} ans d'expérience</span>
+            <span class="chip bg-green-100 text-green-700">Vérifié ✓</span>
+          </div>
+        </div>
+      </div>
+      <h2 class="mt-6 font-semibold">Spécialités</h2>
+      <div class="mt-2 flex flex-wrap gap-2">
+        ${l.specs.map(s=>`<span class="chip bg-brand-50 text-brand-700 text-sm">${s}</span>`).join('')}
+      </div>
+      <h2 class="mt-6 font-semibold">À propos</h2>
+      <p class="mt-2 text-slate-700">${l.bio}</p>
+
+      <h2 class="mt-6 font-semibold">Avis clients récents</h2>
+      <div class="mt-3 space-y-3">
+        <div class="rounded-xl border p-4">
+          <p class="text-yellow-500">★★★★★ <span class="text-sm text-slate-500">— Julie M.</span></p>
+          <p class="mt-1 text-sm text-slate-700">Très à l'écoute, conseils clairs. Recommandé !</p>
+        </div>
+        <div class="rounded-xl border p-4">
+          <p class="text-yellow-500">★★★★☆ <span class="text-sm text-slate-500">— Marc D.</span></p>
+          <p class="mt-1 text-sm text-slate-700">Bon suivi, a bien expliqué les démarches.</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const slots = ['mer. 29 avr. 10:00','mer. 29 avr. 11:30','jeu. 30 avr. 09:00','jeu. 30 avr. 14:00','ven. 1 mai 10:30','lun. 4 mai 15:00'];
+  document.getElementById('profile-aside').innerHTML = `
+    <p class="text-2xl font-bold">${l.price} €</p>
+    <p class="text-sm text-slate-500">Consultation 30 min</p>
+    <p class="mt-2 text-sm">🎥 Visio · 🏢 Présentiel</p>
+    <h3 class="mt-5 font-semibold">Prochaines disponibilités</h3>
+    <div class="mt-2 grid grid-cols-2 gap-2">
+      ${slots.map(s=>`<button onclick="openBooking('${s}','${l.first} ${l.last}',${l.price})" class="rounded-lg border text-center text-xs py-2 hover:border-brand-500 hover:bg-brand-50">${s}</button>`).join('')}
+    </div>
+    <button class="mt-4 w-full rounded-lg bg-brand-600 text-white py-2 hover:bg-brand-700">Voir tous les créneaux</button>
+  `;
+
+  go('profile');
+}
+
+function openBooking(slot, name, price) {
+  document.getElementById('booking-recap').innerHTML = `
+    <p><strong>Avocat :</strong> Me ${name}</p>
+    <p><strong>Créneau :</strong> ${slot}</p>
+    <p><strong>Prix :</strong> ${price} €</p>
+  `;
+  go('booking');
+}
+
+// type buttons toggle
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('type-btn')) {
+    document.querySelectorAll('.type-btn').forEach(b => {
+      b.classList.remove('active','bg-brand-50','border-brand-500','text-brand-700');
+    });
+    e.target.classList.add('active','bg-brand-50','border-brand-500','text-brand-700');
+  }
+  if (e.target.classList.contains('role-btn')) {
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active','bg-brand-50','border-brand-500','text-brand-700'));
+    e.target.classList.add('active','bg-brand-50','border-brand-500','text-brand-700');
+  }
+});
+
+// init
+renderLawyers();
+</script>
+</body>
+</html>

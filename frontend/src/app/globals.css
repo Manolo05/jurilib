@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand: 37 99 235;
+}
+
+html { scroll-behavior: smooth; }
