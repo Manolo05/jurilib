@@ -73,6 +73,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <ul className="mt-3 space-y-2 text-slate-600">
                 <li><Link href="/recherche" className="hover:text-brand-600">Trouver un avocat</Link></li>
                 <li><Link href="/avocat-inscription" className="hover:text-brand-600">Je suis avocat</Link></li>
+                <li><Link href="/comment-ca-marche" className="hover:text-brand-600">Comment ça marche</Link></li>
+                <li><Link href="/faq" className="hover:text-brand-600">FAQ</Link></li>
               </ul>
             </div>
             <div>

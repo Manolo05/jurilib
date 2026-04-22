@@ -75,7 +75,7 @@ export default async function Home() {
             {SPECIALTY_PILLS.map((s) => (
               <Link
                 key={s}
-                href={`/recherche?specialty=${s}`}
+                href={`/droit/${s}`}
                 className="rounded-full bg-white border px-3 py-1 hover:border-brand-500"
               >
                 {specialtyLabels.get(s) ?? s.replaceAll('-', ' ')}
@@ -140,6 +140,26 @@ export default async function Home() {
                   ))}
                 </div>
                 <p className="mt-4 font-semibold text-right">{l.consultationPrice} €</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {cities.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 pb-20">
+          <h2 className="text-2xl font-bold">Trouvez un avocat par ville</h2>
+          <p className="mt-2 text-slate-600">
+            Disponibilités en cabinet ou en visio dans les plus grandes villes françaises.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            {cities.map((c) => (
+              <Link
+                key={c}
+                href={`/ville/${c.toLowerCase()}`}
+                className="rounded-lg border bg-white px-4 py-2 hover:border-brand-500 hover:bg-brand-50 transition"
+              >
+                Avocat à <strong>{c}</strong>
               </Link>
             ))}
           </div>
