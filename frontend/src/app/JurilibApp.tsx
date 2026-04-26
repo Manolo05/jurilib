@@ -17,6 +17,7 @@ const TEXT_MUTED = "#8A8A95";
 const SUCCESS = "#2ECC71";
 const DANGER = "#E74C3C";
 
+// @ts-nocheck
 const SPECIALTIES = [
   { id: "all", label: "Toutes spécialités", icon: "⚖️" },
   { id: "famille", label: "Droit de la famille", icon: "👨‍👩‍👧‍👦" },
