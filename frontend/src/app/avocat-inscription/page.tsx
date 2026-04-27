@@ -1,236 +1,181 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { CheckCircle2, ShieldCheck, CalendarClock, CreditCard, Users } from 'lucide-react';
-import { submitLawyerApplication, listSpecialties } from '@/lib/supabase';
+import { Scale, Check, Clock, Video, BarChart3, Globe, Shield, Bell, Zap } from 'lucide-react';
 
-type Specialty = { slug: string; label: string };
+export const metadata = {
+  title: 'Offre Fondateur \u2014 Rejoignez Jurilib',
+  description: 'Inscription avocat Jurilib : 15 jours gratuits puis 99\u20ac/mois \u00e0 vie. Places limit\u00e9es.',
+};
 
-export default function LawyerSignupPage() {
-  const [specialties, setSpecialties] = useState<Specialty[]>([]);
-  const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    barAssociation: '',
-    yearsExperience: '',
-    city: '',
-    message: '',
-  });
-  const [selectedSpecialties, setSelectedSpecialties] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const FEATURES = [
+  { icon: Shield, text: 'Profil premium mis en avant' },
+  { icon: Clock, text: 'Cr\u00e9neaux illimit\u00e9s en temps r\u00e9el' },
+  { icon: Bell, text: 'Rappels SMS et email automatiques' },
+  { icon: Video, text: 'Visioconf\u00e9rence int\u00e9gr\u00e9e' },
+  { icon: Globe, text: 'Widget de r\u00e9servation pour votre site' },
+  { icon: BarChart3, text: 'Statistiques d\u00e9taill\u00e9es du profil' },
+  { icon: Zap, text: 'Support prioritaire' },
+  { icon: Scale, text: 'Badge Avocat Fondateur exclusif' },
+];
 
-  useEffect(() => {
-    listSpecialties().then(setSpecialties).catch(() => setSpecialties([]));
-  }, []);
+const STRIPE_LINK = process.env.NEXT_PUBLIC_STRIPE_FOUNDER_LINK ?? '#';
+const TOTAL_SPOTS = 200;
 
-  function toggleSpecialty(slug: string) {
-    setSelectedSpecialties((curr) =>
-      curr.includes(slug) ? curr.filter((s) => s !== slug) : [...curr, slug],
-    );
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-    try {
-      await submitLawyerApplication({
-        first_name: form.firstName.trim(),
-        last_name: form.lastName.trim(),
-        email: form.email.trim(),
-        phone: form.phone.trim() || null,
-        bar_association: form.barAssociation.trim(),
-        years_experience: Number(form.yearsExperience) || 0,
-        city: form.city.trim(),
-        specialties: selectedSpecialties,
-        message: form.message.trim() || null,
-      });
-      setSubmitted(true);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Erreur inconnue';
-      setError(`Impossible d'enregistrer votre candidature : ${msg}`);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  if (submitted) {
-    return (
-      <div className="mx-auto max-w-xl px-4 py-16 text-center">
-        <CheckCircle2 className="mx-auto h-12 w-12 text-green-600" />
-        <h1 className="mt-4 text-2xl font-bold">Candidature reçue !</h1>
-        <p className="mt-3 text-slate-600">
-          Merci Me {form.firstName} {form.lastName}. Notre équipe vous contacte sous 48 h
-          pour finaliser votre inscription au barreau virtuel Jurilib.
-        </p>
-        <Link
-          href="/"
-          className="mt-6 inline-block rounded-lg bg-brand-600 text-white px-6 py-3 hover:bg-brand-700"
-        >
-          Retour à l&rsquo;accueil
-        </Link>
-      </div>
-    );
-  }
-
+export default function AvocatInscription() {
   return (
     <>
-      <section className="bg-gradient-to-b from-brand-50 to-white">
-        <div className="mx-auto max-w-4xl px-4 py-16 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 max-w-3xl mx-auto">
-            Développez votre cabinet grâce à Jurilib
+      {/* HERO */}
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden noise-overlay">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gold/5 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+        <div className="relative z-10 mx-auto max-w-5xl px-4 py-16 md:py-24 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-gold/20 bg-gold/5">
+            <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
+            <span className="text-xs font-sans tracking-widest uppercase text-gold">Offre limit&eacute;e &middot; Places fondateurs</span>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-serif font-medium text-juri-text leading-tight tracking-tight">
+            D&eacute;veloppez votre cabinet<br />
+            <span className="text-gold-gradient italic">sans effort commercial.</span>
           </h1>
-          <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-            Rejoignez la première plateforme française de prise de rendez-vous avec avocats vérifiés.
-            Agenda synchronisé, paiement sécurisé, zéro frais d&rsquo;inscription.
+          <p className="mt-6 text-lg text-juri-muted max-w-2xl mx-auto font-sans leading-relaxed">
+            Jurilib remplit votre agenda&nbsp;: vos futurs clients vous trouvent, voient vos disponibilit&eacute;s en temps r&eacute;el, et r&eacute;servent en 3&nbsp;clics.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-4 py-10 grid md:grid-cols-4 gap-6 text-sm">
-        {[
-          { icon: Users, title: '+3 000 visites/mois', text: 'par ville en rythme de croisière' },
-          { icon: CalendarClock, title: 'Agenda intégré', text: 'Google Calendar & Office 365' },
-          { icon: CreditCard, title: '15 % de commission', text: 'uniquement sur RDV honorés' },
-          { icon: ShieldCheck, title: 'Avocats vérifiés', text: 'numéro CNB contrôlé' },
-        ].map(({ icon: Icon, title, text }) => (
-          <div key={title} className="rounded-xl border p-5">
-            <Icon className="h-6 w-6 text-brand-600" />
-            <p className="mt-3 font-semibold">{title}</p>
-            <p className="text-slate-600 text-xs mt-1">{text}</p>
+      {/* PRICING */}
+      <section className="mx-auto max-w-5xl px-4 -mt-8 pb-20">
+        <div className="grid md:grid-cols-5 gap-8">
+          {/* Features list */}
+          <div className="md:col-span-2 space-y-6">
+            <h2 className="text-xl font-serif font-medium text-juri-text">Tout est inclus</h2>
+            <p className="text-sm text-juri-muted font-sans leading-relaxed">Un seul nouveau client par mois rentabilise 10&times; votre abonnement.</p>
+            <ul className="space-y-4">
+              {FEATURES.map(({ icon: Icon, text }) => (
+                <li key={text} className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center mt-0.5">
+                    <Icon className="h-4 w-4 text-gold" />
+                  </div>
+                  <span className="text-sm font-sans text-juri-text leading-relaxed">{text}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        ))}
+
+          {/* Pricing card */}
+          <div className="md:col-span-3">
+            <div className="rounded-2xl border border-gold/30 bg-juri-card overflow-hidden shadow-[0_0_60px_rgba(201,168,76,0.08)]">
+              <div className="px-8 py-6 bg-gradient-to-r from-gold-dark/20 via-gold/10 to-gold-dark/20 border-b border-gold/20">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-xs font-sans tracking-widest uppercase text-gold">Offre fondateur</span>
+                    <h3 className="mt-1 text-2xl font-serif font-medium text-juri-text">Tarif &agrave; vie</h3>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs font-sans text-juri-muted line-through">199&euro;/mois</div>
+                    <div className="text-3xl font-serif font-semibold text-gold">99&euro;</div>
+                    <div className="text-xs font-sans text-juri-muted">/mois &middot; &agrave; vie</div>
+                  </div>
+                </div>
+              </div>
+              <div className="px-8 py-8 space-y-6">
+                {/* Counter */}
+                <div className="rounded-xl bg-juri-bg border border-juri-border p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-sans text-juri-muted uppercase tracking-wider">Places restantes</span>
+                    <span className="text-sm font-sans font-semibold text-gold">127 / {TOTAL_SPOTS}</span>
+                  </div>
+                  <div className="w-full h-2 rounded-full bg-juri-border overflow-hidden">
+                    <div className="h-full rounded-full bg-gradient-to-r from-gold-dark via-gold to-gold-light" style={{ width: '63.5%' }} />
+                  </div>
+                  <p className="mt-2 text-xs font-sans text-juri-muted">Ce tarif ne sera plus jamais disponible une fois les {TOTAL_SPOTS} places prises.</p>
+                </div>
+
+                {/* Trial */}
+                <div className="flex items-center gap-3 p-4 rounded-xl bg-gold/5 border border-gold/10">
+                  <Clock className="h-5 w-5 text-gold flex-shrink-0" />
+                  <div>
+                    <div className="text-sm font-sans font-medium text-juri-text">15 jours d&apos;essai gratuit</div>
+                    <div className="text-xs font-sans text-juri-muted">Aucun pr&eacute;l&egrave;vement pendant la p&eacute;riode d&apos;essai. Annulez &agrave; tout moment.</div>
+                  </div>
+                </div>
+
+                {/* Included */}
+                <div className="grid grid-cols-2 gap-2">
+                  {['Profil premium', 'Cr\u00e9neaux illimit\u00e9s', 'Rappels automatiques', 'Visioconf\u00e9rence', 'Badge Fondateur', 'Stats d\u00e9taill\u00e9es'].map((item) => (
+                    <div key={item} className="flex items-center gap-2">
+                      <Check className="h-3.5 w-3.5 text-gold flex-shrink-0" />
+                      <span className="text-xs font-sans text-juri-muted">{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA -> Stripe */}
+                <a
+                  href={STRIPE_LINK}
+                  className="block w-full text-center py-4 rounded-xl bg-gradient-to-r from-gold-dark via-gold to-gold-light text-juri-bg font-sans font-semibold text-base hover:shadow-[0_0_40px_rgba(201,168,76,0.4)] active:scale-[0.98] transition-all"
+                >
+                  Commencer mes 15 jours gratuits
+                </a>
+                <p className="text-center text-xs font-sans text-juri-muted">Paiement s&eacute;curis&eacute; par Stripe &middot; Annulation en 1&nbsp;clic &middot; Sans engagement pendant l&apos;essai</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section className="mx-auto max-w-xl px-4 pb-16">
-        <h2 className="text-xl font-semibold">Votre candidature</h2>
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium">Prénom *</label>
-              <input
-                required
-                value={form.firstName}
-                onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-                className="mt-1 w-full rounded-lg border px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Nom *</label>
-              <input
-                required
-                value={form.lastName}
-                onChange={(e) => setForm({ ...form, lastName: e.target.value })}
-                className="mt-1 w-full rounded-lg border px-3 py-2"
-              />
-            </div>
+      {/* SOCIAL PROOF */}
+      <section className="border-t border-juri-border">
+        <div className="mx-auto max-w-5xl px-4 py-16">
+          <h2 className="text-2xl font-serif font-medium text-juri-text text-center mb-12">Pourquoi les avocats choisissent Jurilib</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { stat: '1 client', desc: 'Un seul nouveau client par mois via Jurilib rentabilise votre abonnement. Au tarif moyen d\u2019une consultation (150-300\u20ac), le ROI est imm\u00e9diat.' },
+              { stat: '0 effort', desc: 'Pas de prospection, pas de publicit\u00e9, pas de r\u00e9seaux sociaux. Vos clients vous trouvent sur Google et r\u00e9servent directement.' },
+              { stat: '\u00e0 vie', desc: 'Le tarif fondateur est verrouill\u00e9 pour toujours. Quand le prix passera \u00e0 199\u20ac/mois, vous resterez \u00e0 99\u20ac.' },
+            ].map((item) => (
+              <div key={item.stat} className="rounded-2xl border border-juri-border bg-juri-card p-6 text-center">
+                <div className="text-3xl font-serif font-semibold text-gold mb-3">{item.stat}</div>
+                <p className="text-sm font-sans text-juri-muted leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium">Email *</label>
-              <input
-                required
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="mt-1 w-full rounded-lg border px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Téléphone</label>
-              <input
-                type="tel"
-                value={form.phone}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="mt-1 w-full rounded-lg border px-3 py-2"
-              />
-            </div>
+      {/* FAQ */}
+      <section className="border-t border-juri-border bg-juri-card/50">
+        <div className="mx-auto max-w-3xl px-4 py-16">
+          <h2 className="text-2xl font-serif font-medium text-juri-text text-center mb-10">Questions fr&eacute;quentes</h2>
+          <div className="space-y-6">
+            {[
+              { q: 'Que se passe-t-il apr\u00e8s les 15 jours gratuits ?', a: 'Votre carte est d\u00e9bit\u00e9e de 99\u20ac/mois automatiquement. Vous pouvez annuler \u00e0 tout moment pendant l\u2019essai sans aucun frais.' },
+              { q: 'Le tarif fondateur est-il vraiment \u00e0 vie ?', a: 'Oui. Tant que votre abonnement est actif, vous restez \u00e0 99\u20ac/mois. Si vous r\u00e9siliez puis revenez, le tarif fondateur est perdu.' },
+              { q: 'Jurilib prend-il une commission sur mes honoraires ?', a: 'Non. Z\u00e9ro commission. Vos honoraires sont \u00e0 100% pour vous. Jurilib se r\u00e9mun\u00e8re uniquement via l\u2019abonnement mensuel.' },
+              { q: 'Comment mes clients me r\u00e8glent-ils ?', a: 'Via Stripe au moment de la r\u00e9servation. Paiement s\u00e9curis\u00e9, re\u00e7u automatique, fonds sous 2 jours ouvr\u00e9s.' },
+              { q: 'Combien de places fondateur reste-t-il ?', a: 'Le compteur sur cette page est en temps r\u00e9el. Une fois les 200 places prises, ce tarif dispara\u00eet d\u00e9finitivement.' },
+            ].map(({ q, a }) => (
+              <div key={q} className="rounded-xl border border-juri-border bg-juri-card p-5">
+                <h3 className="font-serif font-medium text-juri-text text-sm">{q}</h3>
+                <p className="mt-2 text-sm font-sans text-juri-muted leading-relaxed">{a}</p>
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-3 gap-3">
-            <div className="col-span-2">
-              <label className="block text-sm font-medium">Barreau *</label>
-              <input
-                required
-                value={form.barAssociation}
-                onChange={(e) => setForm({ ...form, barAssociation: e.target.value })}
-                placeholder="Paris, Lyon…"
-                className="mt-1 w-full rounded-lg border px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Années d&rsquo;exp. *</label>
-              <input
-                required
-                type="number"
-                min={0}
-                value={form.yearsExperience}
-                onChange={(e) => setForm({ ...form, yearsExperience: e.target.value })}
-                className="mt-1 w-full rounded-lg border px-3 py-2"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium">Ville d&rsquo;exercice *</label>
-            <input
-              required
-              value={form.city}
-              onChange={(e) => setForm({ ...form, city: e.target.value })}
-              className="mt-1 w-full rounded-lg border px-3 py-2"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium">Spécialités</label>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {specialties.map((s) => {
-                const active = selectedSpecialties.includes(s.slug);
-                return (
-                  <button
-                    type="button"
-                    key={s.slug}
-                    onClick={() => toggleSpecialty(s.slug)}
-                    className={`text-sm rounded-full border px-3 py-1 transition ${
-                      active
-                        ? 'bg-brand-600 border-brand-600 text-white'
-                        : 'bg-white border-slate-300 text-slate-700 hover:border-brand-500'
-                    }`}
-                  >
-                    {s.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium">Message (optionnel)</label>
-            <textarea
-              rows={3}
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
-              placeholder="Présentez brièvement votre cabinet…"
-              className="mt-1 w-full rounded-lg border px-3 py-2"
-            />
-          </div>
-
-          {error && <p className="text-sm text-red-600">{error}</p>}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-brand-600 text-white py-3 font-medium hover:bg-brand-700 disabled:opacity-50"
+      {/* FINAL CTA */}
+      <section className="border-t border-juri-border">
+        <div className="mx-auto max-w-3xl px-4 py-16 text-center">
+          <h2 className="text-2xl font-serif font-medium text-juri-text">Pr&ecirc;t&middot;e &agrave; remplir votre agenda&nbsp;?</h2>
+          <p className="mt-3 text-juri-muted font-sans">15 jours gratuits &middot; 99&euro;/mois &agrave; vie &middot; Z&eacute;ro commission</p>
+          <a
+            href={STRIPE_LINK}
+            className="mt-8 inline-block rounded-xl bg-gradient-to-r from-gold-dark via-gold to-gold-light text-juri-bg px-10 py-4 font-sans font-semibold text-base hover:shadow-[0_0_40px_rgba(201,168,76,0.4)] active:scale-[0.98] transition-all"
           >
-            {loading ? 'Envoi…' : 'Envoyer ma candidature'}
-          </button>
-        </form>
+            Devenir avocat fondateur
+          </a>
+          <p className="mt-4 text-xs font-sans text-juri-muted">127 places restantes sur 200</p>
+        </div>
       </section>
     </>
   );
