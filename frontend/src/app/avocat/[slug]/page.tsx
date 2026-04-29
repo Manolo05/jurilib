@@ -26,7 +26,7 @@ export default async function LawyerProfilePage({ params }: { params: { slug: st
   const lawyer = await getLawyerBySlug(params.slug).catch(() => null);
   if (!lawyer) notFound();
 
-  const visioLink = lawyer.visioLink || lawyer.website || null;
+  const visioLink = (lawyer as any).visioLink || (lawyer as any).website || null;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
@@ -96,7 +96,7 @@ export default async function LawyerProfilePage({ params }: { params: { slug: st
               </div>
               <div className="flex items-center gap-3 text-juri-muted">
                 <Clock className="h-4 w-4 text-gold" />
-                <span>Dur&eacute;e : 30 &agrave; 60 min</span>
+                <span>Dur&eacute;e : 30 &agraveute;e : 30 &agrave; 60 min</span>
               </div>
               <div className="flex items-center gap-3 text-juri-muted">
                 <Video className="h-4 w-4 text-gold" />
