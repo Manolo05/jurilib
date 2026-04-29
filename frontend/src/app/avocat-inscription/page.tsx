@@ -17,7 +17,7 @@ const FEATURES = [
   { icon: Scale, text: 'Badge Avocat Fondateur exclusif' },
 ];
 
-const STRIPE_LINK = process.env.NEXT_PUBLIC_STRIPE_FOUNDER_LINK ?? '#';
+const STRIPE_LINK = process.env.NEXT_PUBLIC_STRIPE_FOUNDER_LINK ?? 'https://buy.stripe.com/28EeVd9I26v14J27pP4Rq02';
 const TOTAL_SPOTS = 200;
 
 export default function AvocatInscription() {
