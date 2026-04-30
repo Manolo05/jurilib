@@ -1,71 +1,48 @@
-export const metadata = { title: 'Conditions générales d’utilisation — Jurilib' };
+// @ts-nocheck
+export const metadata = {
+  title: 'Conditions G\u00e9n\u00e9rales d\u2019Utilisation — Jurilib',
+  description: 'CGU de la plateforme Jurilib — mise en relation avocats et justiciables.',
+};
 
-export default function CGU() {
+export default function CguPage() {
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12 prose prose-slate prose-headings:font-semibold">
-      <h1>Conditions générales d&rsquo;utilisation</h1>
-      <p className="text-sm text-slate-500">
-        Dernière mise à jour&nbsp;: {new Date().toLocaleDateString('fr-FR')}
-      </p>
-
-      <h2>1. Objet</h2>
-      <p>
-        Les présentes CGU régissent l&rsquo;accès et l&rsquo;utilisation de la plateforme
-        Jurilib (jurilib.fr), qui permet aux utilisateurs de prendre rendez-vous
-        avec des avocats inscrits à un barreau français.
-      </p>
-
-      <h2>2. Accès</h2>
-      <p>
-        La consultation du site et des fiches avocats est libre et gratuite.
-        La prise de rendez-vous nécessite de renseigner un nom, un email
-        et un numéro de téléphone. Aucune création de compte n&rsquo;est requise
-        pendant la phase de bêta.
-      </p>
-
-      <h2>3. Rôle de Jurilib</h2>
-      <p>
-        Jurilib agit en qualité d&rsquo;intermédiaire technique. Jurilib ne fournit
-        pas de prestations juridiques. Les avocats référencés sont
-        professionnels indépendants, seuls responsables de leurs conseils,
-        honoraires, et de la tenue de leurs rendez-vous.
-      </p>
-
-      <h2>4. Prise de rendez-vous</h2>
-      <p>
-        La demande envoyée via le formulaire ne vaut pas rendez-vous confirmé.
-        L&rsquo;avocat dispose d&rsquo;un délai de 24 h ouvrés pour confirmer ou
-        refuser la demande. En cas de refus, aucune somme n&rsquo;est prélevée.
-      </p>
-
-      <h2>5. Paiement (ouverture prochaine)</h2>
-      <p>
-        Lors de l&rsquo;ouverture commerciale, les paiements seront traités via
-        Stripe. Jurilib prélèvera une commission de <strong>15 %</strong> uniquement
-        sur les rendez-vous honorés. En cas d&rsquo;annulation par le client plus
-        de 24 h avant le rendez-vous, remboursement intégral. En cas
-        d&rsquo;annulation ou d&rsquo;absence de l&rsquo;avocat, remboursement intégral.
-      </p>
-
-      <h2>6. Obligations des avocats</h2>
-      <p>
-        Les avocats candidats s&rsquo;engagent à être inscrits à un barreau
-        français et à jour de leurs obligations déontologiques. Jurilib se
-        réserve le droit de vérifier cette inscription et de retirer tout
-        profil ne respectant pas ces règles.
-      </p>
-
-      <h2>7. Données personnelles</h2>
-      <p>
-        Voir notre <a href="/politique-de-confidentialite">politique de
-        confidentialité</a>.
-      </p>
-
-      <h2>8. Droit applicable</h2>
-      <p>
-        Les présentes CGU sont soumises au droit français. Tout litige relève
-        de la compétence des tribunaux de Paris.
-      </p>
-    </article>
+    <div className="mx-auto max-w-3xl px-4 py-16">
+      <h1 className="text-3xl font-serif font-medium text-juri-text mb-8">Conditions G&eacute;n&eacute;rales d&rsquo;Utilisation</h1>
+      <p className="text-xs text-juri-muted font-sans mb-8">Derni&egrave;re mise &agrave; jour : 30 avril 2026</p>
+      <div className="prose-juri space-y-6 text-sm text-juri-muted font-sans leading-relaxed">
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">1. Objet</h2>
+          <p>Les pr&eacute;sentes CGU r&eacute;gissent l&rsquo;utilisation de la plateforme Jurilib, service de mise en relation entre justiciables et avocats inscrits &agrave; un barreau fran&ccedil;ais. Jurilib n&rsquo;est pas un cabinet d&rsquo;avocats et n&rsquo;intervient pas dans la relation avocat-client.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">2. Inscription</h2>
+          <p>L&rsquo;inscription est r&eacute;serv&eacute;e aux avocats r&eacute;guli&egrave;rement inscrits &agrave; un barreau fran&ccedil;ais. Jurilib v&eacute;rifie l&rsquo;inscription au barreau avant activation du profil. L&rsquo;avocat s&rsquo;engage &agrave; fournir des informations exactes.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">3. Services</h2>
+          <p>Jurilib met &agrave; disposition un profil en ligne, un syst&egrave;me de prise de rendez-vous, et un tableau de bord. Les r&eacute;sultats de recherche sont class&eacute;s par pertinence g&eacute;ographique, note moyenne et disponibilit&eacute;.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">4. Tarifs</h2>
+          <p>L&rsquo;offre Fondateur est propos&eacute;e &agrave; 99&euro; HT/mois apr&egrave;s 15 jours d&rsquo;essai gratuit. Ce tarif est garanti &agrave; vie tant que l&rsquo;abonnement reste actif. Jurilib ne pr&eacute;l&egrave;ve aucune commission sur les honoraires.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">5. Responsabilit&eacute;</h2>
+          <p>Jurilib agit en qualit&eacute; d&rsquo;h&eacute;bergeur technique. Jurilib ne saurait &ecirc;tre tenu responsable des informations publi&eacute;es par les avocats ni de la qualit&eacute; des consultations.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">6. Donn&eacute;es personnelles</h2>
+          <p>Les donn&eacute;es sont trait&eacute;es conform&eacute;ment au RGPD. Pour toute demande relative &agrave; vos donn&eacute;es, contactez contact@jurilib.fr.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">7. R&eacute;siliation</h2>
+          <p>L&rsquo;avocat peut r&eacute;silier &agrave; tout moment. La r&eacute;siliation prend effet &agrave; la fin de la p&eacute;riode en cours. En cas de r&eacute;inscription, le tarif Fondateur est perdu.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">8. Droit applicable</h2>
+          <p>Les pr&eacute;sentes CGU sont soumises au droit fran&ccedil;ais. En cas de litige, les parties recherchent une solution amiable avant de saisir les tribunaux comp&eacute;tents.</p>
+        </section>
+      </div>
+    </div>
   );
 }
