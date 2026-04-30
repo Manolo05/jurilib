@@ -56,13 +56,6 @@ export default function ConnexionPage() {
             {mode === 'signup' && (
               <div>
                 <label className="block text-xs font-sans font-medium text-juri-muted mb-1.5">Nom complet</label>
-                <input t'signup')} className={`flex-1 py-2 text-sm font-sans rounded-lg transition-all ${mode === 'signup' ? 'bg-gradient-to-r from-gold-dark to-gold text-juri-bg font-semibold' : 'text-juri-muted'}`}>Inscription</button>
-          </div>
-
-          <form onSubmit={handle} className="space-y-4">
-            {mode === 'signup' && (
-              <div>
-                <label className="block text-xs font-sans font-medium text-juri-muted mb-1.5">Nom complet</label>
                 <input type="text" value={name} onChange={e => setName(e.target.value)} required placeholder="Me Jean Dupont" className="w-full rounded-xl bg-juri-bg border border-juri-border text-juri-text px-4 py-3 text-sm font-sans focus:outline-none focus:border-gold/50 transition-all placeholder:text-juri-muted" />
               </div>
             )}
