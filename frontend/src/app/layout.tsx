@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </Link>
             <nav className="flex items-center gap-6 text-sm">
               <Link href="/recherche" className="font-sans text-juri-muted hover:text-gold transition-colors">Trouver un avocat</Link>
-              <Link href="/avocat-inscription" className="font-sans text-juri-muted hover:text-gold transition-colors">Je suis avocat</Link>
+              <Link href="/rejoindre" className="font-sans text-juri-muted hover:text-gold transition-colors">Je suis avocat</Link>
               <Link href="/login" className="rounded-lg bg-gold/10 border border-gold/20 text-gold px-4 py-2 font-sans font-medium hover:bg-gold/20 transition-all">Se connecter</Link>
             </nav>
           </div>
@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <h3 className="font-serif text-juri-text">Plateforme</h3>
               <ul className="mt-3 space-y-2 text-juri-muted">
                 <li><Link href="/recherche" className="hover:text-gold transition-colors">Trouver un avocat</Link></li>
-                <li><Link href="/avocat-inscription" className="hover:text-gold transition-colors">Je suis avocat</Link></li>
+                <li><Link href="/rejoindre" className="hover:text-gold transition-colors">Je suis avocat</Link></li>
                 <li><Link href="/comment-ca-marche" className="hover:text-gold transition-colors">Comment ca marche</Link></li>
                 <li><Link href="/faq" className="hover:text-gold transition-colors">FAQ</Link></li>
               </ul>

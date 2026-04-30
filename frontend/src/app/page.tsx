@@ -220,7 +220,7 @@ export default async function HomePage() {
             <h2 className="text-2xl font-serif font-medium text-juri-text">Vous &ecirc;tes avocat&middot;e&nbsp;?</h2>
             <p className="mt-2 text-juri-muted max-w-xl font-sans leading-relaxed">Rejoignez Jurilib et d&eacute;veloppez votre cabinet&nbsp;: agenda int&eacute;gr&eacute;, visibilit&eacute; locale, z&eacute;ro commission.</p>
           </div>
-          <Link href="/avocat-inscription" className="mt-6 md:mt-0 inline-block rounded-xl bg-gradient-to-r from-gold-dark via-gold to-gold-light text-juri-bg px-8 py-3.5 hover:shadow-[0_0_30px_rgba(201,168,76,0.3)] font-sans font-semibold transition-all">Rejoindre le r&eacute;seau</Link>
+          <Link href="/rejoindre" className="mt-6 md:mt-0 inline-block rounded-xl bg-gradient-to-r from-gold-dark via-gold to-gold-light text-juri-bg px-8 py-3.5 hover:shadow-[0_0_30px_rgba(201,168,76,0.3)] font-sans font-semibold transition-all">Rejoindre le r&eacute;seau</Link>
         </div>
       </section>
     </>
