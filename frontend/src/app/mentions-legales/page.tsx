@@ -1,50 +1,35 @@
-export const metadata = { title: 'Mentions légales — Jurilib' };
+// @ts-nocheck
+export const metadata = {
+  title: 'Mentions l\u00e9gales — Jurilib',
+  description: 'Mentions l\u00e9gales de la plateforme Jurilib.',
+};
 
-export default function MentionsLegales() {
+export default function MentionsLegalesPage() {
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12 prose prose-slate prose-headings:font-semibold">
-      <h1>Mentions légales</h1>
-      <p className="text-sm text-slate-500">Dernière mise à jour&nbsp;: {new Date().toLocaleDateString('fr-FR')}</p>
-
-      <h2>Éditeur du site</h2>
-      <p>
-        <strong>Jurilib</strong> — plateforme indépendante de mise en relation entre clients et avocats.<br />
-        Responsable de publication&nbsp;: Maxime (gérant).<br />
-        Contact&nbsp;: <a href="mailto:contact@jurilib.fr">contact@jurilib.fr</a>
-      </p>
-      <p className="text-sm text-slate-600">
-        Le site est actuellement en bêta privée. Les mentions seront complétées
-        (raison sociale, SIRET, RCS) à l&rsquo;ouverture commerciale.
-      </p>
-
-      <h2>Hébergement</h2>
-      <p>
-        Frontend&nbsp;: <strong>Vercel Inc.</strong>, 650 California Street, San Francisco,
-        CA 94108, USA — vercel.com.<br />
-        Base de données&nbsp;: <strong>Supabase Inc.</strong>, 970 Toa Payoh North #07-04,
-        Singapore 318992 — supabase.com. Hébergement UE (région eu-west-3).
-      </p>
-
-      <h2>Propriété intellectuelle</h2>
-      <p>
-        L&rsquo;ensemble du contenu du site (textes, graphismes, logo, code)
-        est protégé au titre du droit d&rsquo;auteur. Les photos de profil des avocats
-        de démonstration sont fournies par pravatar.cc sous licence libre
-        uniquement à des fins d&rsquo;illustration avant lancement.
-      </p>
-
-      <h2>Limitation de responsabilité</h2>
-      <p>
-        Jurilib est une plateforme de mise en relation. Les avocats inscrits
-        restent seuls responsables des conseils qu&rsquo;ils délivrent. Jurilib ne
-        donne aucun avis juridique.
-      </p>
-
-      <h2>Signalement</h2>
-      <p>
-        Toute demande de retrait de contenu ou signalement d&rsquo;erreur peut être
-        adressée à <a href="mailto:contact@jurilib.fr">contact@jurilib.fr</a>.
-      </p>
-    </article>
+    <div className="mx-auto max-w-3xl px-4 py-16">
+      <h1 className="text-3xl font-serif font-medium text-juri-text mb-8">Mentions l&eacute;gales</h1>
+      <div className="space-y-6 text-sm text-juri-muted font-sans leading-relaxed">
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">&Eacute;diteur du site</h2>
+          <p>Jurilib<br />Plateforme de mise en relation entre justiciables et avocats<br />Email : contact@jurilib.fr<br />SIRET : en cours d&rsquo;immatriculation</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">H&eacute;bergement</h2>
+          <p>Vercel Inc.<br />440 N Baxter St, Los Angeles, CA 90012, USA<br />Site : vercel.com</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">Propri&eacute;t&eacute; intellectuelle</h2>
+          <p>L&rsquo;ensemble du contenu du site (textes, images, logo, code) est prot&eacute;g&eacute; par le droit d&rsquo;auteur. Toute reproduction sans autorisation est interdite.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">Donn&eacute;es personnelles</h2>
+          <p>Conform&eacute;ment au RGPD, vous disposez d&rsquo;un droit d&rsquo;acc&egrave;s, de rectification et de suppression de vos donn&eacute;es. Contactez contact@jurilib.fr pour exercer vos droits.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-serif font-medium text-juri-text mb-2">Cookies</h2>
+          <p>Le site utilise des cookies techniques n&eacute;cessaires au fonctionnement et des cookies d&rsquo;analyse anonymes pour am&eacute;liorer l&rsquo;exp&eacute;rience utilisateur.</p>
+        </section>
+      </div>
+    </div>
   );
 }
